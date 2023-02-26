@@ -1,21 +1,23 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
+  text-align: center;
+  font-size: 3rem;
+  padding: 2rem;
 }
 
 .description {
   display: inherit;
+  flex-direction: inherit;
   justify-content: inherit;
-  align-items: inherit;
-  font-size: 0.85rem;
+  align-items: center;
+  font-size: 1rem;
   max-width: var(--max-width);
   width: 100%;
   z-index: 2;
   font-family: var(--font-mono);
+  margin: 1rem;
 }
 
 .description a {
@@ -32,6 +34,41 @@
   background-color: rgba(var(--callout-rgb), 0.5);
   border: 1px solid rgba(var(--callout-border-rgb), 0.3);
   border-radius: var(--border-radius);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  font-family: var(--font-mono);
+  width: auto;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 1rem;
+}
+
+.form input {
+  border-style: solid;
+  border-color: rgb(0, 183, 255);
+  border-radius: 10px;
+  width: 40vw;
+  text-align: center;
+  margin: 10px;
+  padding: 0.5rem;
+}
+
+.form button {
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(54, 54, 55);
+  margin-top: 0;
+  color: rgb(255, 255, 255);
+  font-weight: 300;
+  font-size: 1.3rem;
+  text-align: center;
+  width: auto;
+  padding: 5px 20px;
 }
 
 .code {
