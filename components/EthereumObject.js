@@ -10,10 +10,7 @@ export default function EthereumObject() {
   // Check for metamask
   (async () => {
     const provider = await getEthereumObject();
-    if (!provider) {
-      console.log("Make sure you have metamask!");
-      setHasMetamask(false);
-    } else {
+    if (provider) {
       console.log("We have the ethereum object", ethereum);
       setHasMetamask(true);
     }
@@ -41,30 +38,27 @@ export default function EthereumObject() {
   useEffect(() => {
     findMetaMaskAccount().then((account) => {
       if (account !== null) {
-        console.log("THE ACCOUNT IS NOT NULL AND IS" + account);
+        console.log("THE ACCOUNT IS" + account);
         setCurrentAccount(account);
-      } else {
-        console.log("THE ACCOUNT IS NULL AND IS 0x");
-        setCurrentAccount("0x");
       }
     });
-  }, []);
+  }, [currentAccount]);
 
-  if (hasMetamask === false) {
-    return <Message text="MetaMask is needed to use this dApp." />;
+  if (currentAccount !== "") {
+    return (
+      <Message text="Metamask account connected: " account={currentAccount} />
+    );
   } else if (hasMetamask === true) {
     return (
       <div className={styles.main}>
         <Message text="Ethereum object hooked! Please connect your account." />
-        <button className={styles.form} onClick={connectWallet}>
+        <button className={styles.button} onClick={connectWallet}>
           Connect Wallet
         </button>
       </div>
     );
   } else {
-    return (
-      <Message text="Metamask account connected: " account={currentAccount} />
-    );
+    return <Message text="MetaMask is needed to use this dApp." />;
   }
 }
 

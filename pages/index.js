@@ -12,7 +12,7 @@ export default function Home() {
       <form className={styles.form}>
         <label htmlFor="name">Wave to me here! 🫡</label>
         <input id="name" type="text"></input>
-        <button className={styles.form}>Send</button>
+        <button className={styles.button}>Send</button>
       </form>
       <EthereumObject></EthereumObject>
     </div>
