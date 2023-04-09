@@ -3,6 +3,52 @@ import styles from "/styles/Home.module.css";
 
 const getEthereumObject = () => window.ethereum;
 
+// Display message about metamask hook in UI
+function Message({ text, account }) {
+  return (
+    <div className={styles.main}>
+      <p className={styles.description}>
+        {text}
+        {account}
+      </p>
+      <style jsx>{`
+        p {
+          color: rgb(200, 200, 200);
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// This function returns the first linked account found.
+// If there is no account linked, it will return null.
+const findMetaMaskAccount = async () => {
+  try {
+    const ethereum = getEthereumObject();
+
+    // First make sure we have access to the Ethereum object.
+    if (!ethereum) {
+      console.error("Make sure you have Metamask!");
+      return null;
+    }
+
+    console.log("We have the Ethereum object", ethereum);
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("Found an authorized account:", account);
+      return account;
+    } else {
+      console.error("No authorized account found");
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 export default function EthereumObject() {
   const [hasMetamask, setHasMetamask] = useState(false);
   const [currentAccount, setCurrentAccount] = useState("");
@@ -10,7 +56,9 @@ export default function EthereumObject() {
   // Check for metamask
   (async () => {
     const provider = await getEthereumObject();
-    if (provider) {
+    if (!provider) {
+      console.error("Get metamask");
+    } else if (provider) {
       console.log("We have the ethereum object", ethereum);
       setHasMetamask(true);
     }
@@ -60,50 +108,4 @@ export default function EthereumObject() {
   } else {
     return <Message text="MetaMask is needed to use this dApp." />;
   }
-}
-
-// This function returns the first linked account found.
-// If there is no account linked, it will return null.
-const findMetaMaskAccount = async () => {
-  try {
-    const ethereum = getEthereumObject();
-
-    // First make sure we have access to the Ethereum object.
-    if (!ethereum) {
-      console.error("Make sure you have Metamask!");
-      return null;
-    }
-
-    console.log("We have the Ethereum object", ethereum);
-    const accounts = await ethereum.request({ method: "eth_accounts" });
-
-    if (accounts.length !== 0) {
-      const account = accounts[0];
-      console.log("Found an authorized account:", account);
-      return account;
-    } else {
-      console.error("No authorized account found");
-      return null;
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-
-// Display message about metamask hook in UI
-function Message({ text, account }) {
-  return (
-    <div className={styles.main}>
-      <p className={styles.description}>
-        {text}
-        {account}
-      </p>
-      <style jsx>{`
-        p {
-          color: rgb(200, 200, 200);
-        }
-      `}</style>
-    </div>
-  );
 }
