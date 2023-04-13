@@ -7,16 +7,6 @@ const getEthereumObject = () => window.ethereum;
 const contractAddress = "0x632effae1EB8835178bC70F4C0f2DDEB65a4405D";
 const contractABI = abi.abi;
 
-// function useEthereumObject() {
-//   const [ethObject, setEthObject] = useState(null);
-
-//   useEffect(() => {
-//     setEthObject(getEthereumObject());
-//   }, []);
-
-//   return ethObject;
-// }
-
 // Display message about metamask hook in UI
 function Message({ text, account }) {
   return (
