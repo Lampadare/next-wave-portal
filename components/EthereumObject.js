@@ -1,7 +1,21 @@
 import { useState, useEffect } from "react";
 import styles from "/styles/Home.module.css";
+import { ethers } from "ethers";
+import abi from "@/utils/WavePortal.json";
 
 const getEthereumObject = () => window.ethereum;
+const contractAddress = "0x632effae1EB8835178bC70F4C0f2DDEB65a4405D";
+const contractABI = abi.abi;
+
+// function useEthereumObject() {
+//   const [ethObject, setEthObject] = useState(null);
+
+//   useEffect(() => {
+//     setEthObject(getEthereumObject());
+//   }, []);
+
+//   return ethObject;
+// }
 
 // Display message about metamask hook in UI
 function Message({ text, account }) {
@@ -55,10 +69,11 @@ export default function EthereumObject() {
 
   // Check for metamask
   (async () => {
-    const provider = await getEthereumObject();
-    if (!provider) {
+    const ethereum = await getEthereumObject();
+    if (!ethereum) {
       console.error("Get metamask");
-    } else if (provider) {
+    } else if (ethereum) {
+      console.log("ethereum", ethereum);
       console.log("We have the ethereum object", ethereum);
       setHasMetamask(true);
     }
@@ -83,6 +98,41 @@ export default function EthereumObject() {
     }
   };
 
+  // Wave
+  const wave = async () => {
+    try {
+      const ethereum = getEthereumObject();
+      console.log("ethereum", ethereum);
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const wavePortalContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        let count = await wavePortalContract.getTotalWaves();
+        console.log("Retrieved total wave count...", count.toNumber());
+
+        const waveTxn = await wavePortalContract.wave("yo");
+        console.log("Mining...", waveTxn.hash);
+
+        await waveTxn.wait();
+        console.log("Mined -- ", waveTxn.hash);
+
+        count = await wavePortalContract.getTotalWaves();
+        console.log("Retrieved total wave count...", count.toNumber());
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Check for account on page load an on account change
   useEffect(() => {
     findMetaMaskAccount().then((account) => {
       if (account !== null) {
@@ -92,14 +142,23 @@ export default function EthereumObject() {
     });
   }, [currentAccount]);
 
+  // Display message about metamask hook in UI
   if (currentAccount !== "") {
     return (
-      <Message text="Metamask account connected: " account={currentAccount} />
+      <div className={styles.main}>
+        <form className={styles.form}></form>
+        <label htmlFor="name">Wave to me here! 🫡</label>
+        <input id="name" type="text"></input>
+        <button className={styles.button} onClick={wave}>
+          Send
+        </button>
+        <Message text="Metamask account connected: " account={currentAccount} />
+      </div>
     );
   } else if (hasMetamask === true) {
     return (
       <div className={styles.main}>
-        <Message text="Ethereum object hooked! Please connect your account." />
+        <Message text="Ethereum object found! Please connect your account." />
         <button className={styles.button} onClick={connectWallet}>
           Connect Wallet
         </button>

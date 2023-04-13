@@ -1,4 +1,5 @@
 import EthereumObject from "@/components/EthereumObject";
+import NonSSRWrapper from "@/components/no-SSR-wrapper";
 import styles from "/styles/Home.module.css";
 
 export default function Home() {
@@ -9,11 +10,6 @@ export default function Home() {
         This is the beginning of a blockchain-enabled decentralised
         crowdsourcing platform.
       </p>
-      <form className={styles.form}>
-        <label htmlFor="name">Wave to me here! 🫡</label>
-        <input id="name" type="text"></input>
-        <button className={styles.button}>Send</button>
-      </form>
       <EthereumObject></EthereumObject>
     </div>
   );
