@@ -1,5 +1,4 @@
 import EthereumObject from "@/components/EthereumObject";
-import NonSSRWrapper from "@/components/no-SSR-wrapper";
 import styles from "/styles/Home.module.css";
 
 export default function Home() {
