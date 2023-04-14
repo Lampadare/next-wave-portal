@@ -56,18 +56,45 @@ const findMetaMaskAccount = async () => {
 export default function EthereumObject() {
   const [hasMetamask, setHasMetamask] = useState(false);
   const [currentAccount, setCurrentAccount] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
+  // // Check for metamask
+  // (async () => {
+  //   const ethereum = await getEthereumObject();
+  //   if (!ethereum) {
+  //     console.error("Get metamask");
+  //   } else if (ethereum) {
+  //     console.log("ethereum", ethereum);
+  //     console.log("We have the ethereum object", ethereum);
+  //     setHasMetamask(true);
+  //   }
+  // })();
 
   // Check for metamask
-  (async () => {
-    const ethereum = await getEthereumObject();
-    if (!ethereum) {
-      console.error("Get metamask");
-    } else if (ethereum) {
-      console.log("ethereum", ethereum);
-      console.log("We have the ethereum object", ethereum);
-      setHasMetamask(true);
-    }
-  })();
+  useEffect(() => {
+    const checkMetamask = async () => {
+      const ethereum = await getEthereumObject();
+      if (!ethereum) {
+        console.error("Get metamask");
+      } else if (ethereum) {
+        console.log("ethereum", ethereum);
+        console.log("We have the ethereum object", ethereum);
+        setHasMetamask(true);
+      }
+    };
+
+    checkMetamask();
+  }, []);
+
+  // Check for account on page load an on account change
+  useEffect(() => {
+    findMetaMaskAccount().then((account) => {
+      if (account !== null) {
+        console.log("THE ACCOUNT IS" + account);
+        setCurrentAccount(account);
+      }
+    });
+  }, [currentAccount]);
 
   // Connect to wallet
   const connectWallet = async () => {
@@ -106,7 +133,7 @@ export default function EthereumObject() {
         let count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
 
-        const waveTxn = await wavePortalContract.wave("yo");
+        const waveTxn = await wavePortalContract.wave(inputValue.toString());
         console.log("Mining...", waveTxn.hash);
 
         await waveTxn.wait();
@@ -122,23 +149,18 @@ export default function EthereumObject() {
     }
   };
 
-  // Check for account on page load an on account change
-  useEffect(() => {
-    findMetaMaskAccount().then((account) => {
-      if (account !== null) {
-        console.log("THE ACCOUNT IS" + account);
-        setCurrentAccount(account);
-      }
-    });
-  }, [currentAccount]);
-
   // Display message about metamask hook in UI
   if (currentAccount !== "") {
     return (
       <div className={styles.main}>
-        <form className={styles.form}></form>
         <label htmlFor="name">Wave to me here! 🫡</label>
-        <input id="name" type="text"></input>
+        <input
+          className={styles.input}
+          id="name"
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
         <button className={styles.button} onClick={wave}>
           Send
         </button>

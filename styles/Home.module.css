@@ -46,9 +46,10 @@
   font-size: 1.4rem;
   font-weight: 800;
   margin: 1rem;
+  border-radius: var(--border-radius);
 }
 
-.form input {
+.input {
   border-style: solid;
   border-color: rgb(0, 183, 255);
   border-radius: 10px;
