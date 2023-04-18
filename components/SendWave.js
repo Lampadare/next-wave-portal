@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "/styles/Home.module.css";
 import { ethers } from "ethers";
+import { useSigner } from "@thirdweb-dev/react";
+import { useConnectionStatus } from "@thirdweb-dev/react";
 import abi from "@/utils/WavePortal.json";
 import LoadingIndicator from "@/components/LoadingIndicator.js";
 import Message from "@/components/Message.js";
@@ -9,20 +11,17 @@ const getEthereumObject = () => window.ethereum;
 const contractAddress = "0x632effae1EB8835178bC70F4C0f2DDEB65a4405D";
 const contractABI = abi.abi;
 
-export default function EthereumObject() {
-  const [hasMetamask, setHasMetamask] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState("");
+export default function SendWave() {
   const [inputValue, setInputValue] = useState("");
+  const connectionStatus = useConnectionStatus();
+  const signer = useSigner();
 
   // Wave
   const wave = async () => {
     try {
       const ethereum = getEthereumObject();
-      console.log("ethereum", ethereum);
 
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
+      if (connectionStatus === "connected") {
         const wavePortalContract = new ethers.Contract(
           contractAddress,
           contractABI,
@@ -41,7 +40,7 @@ export default function EthereumObject() {
         count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
       } else {
-        console.log("Ethereum object doesn't exist!");
+        console.log("Please Connect Wallet");
       }
     } catch (error) {
       console.log(error);
@@ -49,10 +48,10 @@ export default function EthereumObject() {
   };
 
   // Display message about metamask hook in UI
-  if (currentAccount !== "") {
+  if (connectionStatus === "connected") {
     return (
       <div className={styles.main}>
-        <label htmlFor="name">Wave to me here! 🫡</label>
+        <h3 htmlFor="name">Wave to me here! 🫡</h3>
         <input
           className={styles.input}
           id="name"
@@ -63,19 +62,9 @@ export default function EthereumObject() {
         <button className={styles.button} onClick={wave}>
           Send
         </button>
-        <Message text="Metamask account connected: " account={currentAccount} />
-      </div>
-    );
-  } else if (hasMetamask === true) {
-    return (
-      <div className={styles.main}>
-        <Message text="Ethereum object found! Please connect your account." />
-        <button className={styles.button} onClick={connectWallet}>
-          Connect Wallet
-        </button>
       </div>
     );
   } else {
-    return <Message text="MetaMask is needed to use this dApp." />;
+    return <Message text="Please connect wallet." />;
   }
 }

@@ -11,6 +11,8 @@
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
     "@next/font": "13.1.6",
+    "@thirdweb-dev/react": "^3.11.7",
+    "@thirdweb-dev/sdk": "^3.10.10",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "ethers": "^5.7.2",
