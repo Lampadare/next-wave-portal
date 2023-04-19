@@ -1,32 +1,28 @@
 import { useState, useEffect } from "react";
 import styles from "/styles/Home.module.css";
 import { ethers } from "ethers";
-import { useSigner } from "@thirdweb-dev/react";
 import { useConnectionStatus } from "@thirdweb-dev/react";
+import { useContract } from "@thirdweb-dev/react";
 import abi from "@/utils/WavePortal.json";
 import Message from "@/components/Message.js";
 import Tile from "@/components/Tile.js";
 
-const contractAddress = "0x632effae1EB8835178bC70F4C0f2DDEB65a4405D";
+const contractAddress = "0xFcC53A2F5c95E6370B13D45a3C8fad3446A3a6D0";
 const contractABI = abi.abi;
 
 export default function SendWave() {
   const [inputWave, setInputWave] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const connectionStatus = useConnectionStatus();
-  const signer = useSigner();
+  const { wavePortalContract, isLoading, error } = useContract(
+    "{{contract_address}}"
+  );
   let count = 0;
 
   // Wave
   const wave = async () => {
     try {
       if (connectionStatus === "connected") {
-        const wavePortalContract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
         count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
 
