@@ -1,6 +1,7 @@
-import SendWave from "@/components/SendWave";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import styles from "/styles/Home.module.css";
+import SendWave from "@/components/SendWave";
+import LoadingIndicator from "@/components/LoadingIndicator.js";
 
 export default function Home() {
   return (

@@ -4,23 +4,22 @@ import { ethers } from "ethers";
 import { useSigner } from "@thirdweb-dev/react";
 import { useConnectionStatus } from "@thirdweb-dev/react";
 import abi from "@/utils/WavePortal.json";
-import LoadingIndicator from "@/components/LoadingIndicator.js";
 import Message from "@/components/Message.js";
+import Tile from "@/components/Tile.js";
 
-const getEthereumObject = () => window.ethereum;
 const contractAddress = "0x632effae1EB8835178bC70F4C0f2DDEB65a4405D";
 const contractABI = abi.abi;
 
 export default function SendWave() {
-  const [inputValue, setInputValue] = useState("");
+  const [inputWave, setInputWave] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const connectionStatus = useConnectionStatus();
   const signer = useSigner();
+  let count = 0;
 
   // Wave
   const wave = async () => {
     try {
-      const ethereum = getEthereumObject();
-
       if (connectionStatus === "connected") {
         const wavePortalContract = new ethers.Contract(
           contractAddress,
@@ -28,14 +27,16 @@ export default function SendWave() {
           signer
         );
 
-        let count = await wavePortalContract.getTotalWaves();
+        count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
 
-        const waveTxn = await wavePortalContract.wave(inputValue.toString());
+        const waveTxn = await wavePortalContract.wave(inputWave);
+        setIsLoading(true);
         console.log("Mining...", waveTxn.hash);
 
         await waveTxn.wait();
         console.log("Mined -- ", waveTxn.hash);
+        setIsLoading(false);
 
         count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
@@ -56,12 +57,17 @@ export default function SendWave() {
           className={styles.input}
           id="name"
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={inputWave}
+          onChange={(e) => setInputWave(e.target.value)}
         />
         <button className={styles.button} onClick={wave}>
           Send
         </button>
+        <Tile
+          is_loading={isLoading}
+          wave_number={count}
+          wave_content={inputWave}
+        />
       </div>
     );
   } else {

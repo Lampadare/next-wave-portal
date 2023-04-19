@@ -7,8 +7,10 @@ export default function LoadingIndicator() {
     <div className={styles.main}>
       <Image
         className={styles.loader}
-        src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif"
+        src="/loading.png"
         alt="loading..."
+        width={500}
+        height={500}
       ></Image>
     </div>
   );
