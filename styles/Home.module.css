@@ -7,6 +7,15 @@
   padding: 2rem;
 }
 
+.tilegrid {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  max-width: none !important;
+  overflow-x: none !important;
+}
+
 .description {
   display: inherit;
   flex-direction: inherit;
@@ -93,13 +102,18 @@
 }
 
 .card {
-  margin: 40px 10px;
+  margin: 10px 10px;
   min-width: 250px;
   padding: 1rem 1.2rem;
   border-radius: 10px;
   background: rgb(253, 253, 253);
   border: 1px solid rgb(255, 163, 255);
   transition: background 200ms, border 200ms;
+  overflow-wrap: break-word;
+}
+
+.userWave {
+  border: 1px solid rgb(30, 101, 255);
 }
 
 .card span {
@@ -107,15 +121,22 @@
   transition: transform 200ms;
 }
 
+.card h1 {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+
 .card h2 {
   text-align: left;
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.1rem;
 }
 
 .card h3 {
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0.7rem;
 }
@@ -123,10 +144,18 @@
 .card p {
   margin: 0;
   opacity: 0.9;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   text-align: left;
   line-height: 1.5;
   max-width: 30ch;
+  margin-bottom: 1rem;
+}
+
+.card i {
+  opacity: 0.5;
+  font-size: 0.72rem;
+  text-align: left;
+  line-height: 1.5;
 }
 
 .center {
@@ -163,10 +192,10 @@
 
 .loader {
   position: relative;
-  width: 16px;
-  height: 16px;
-  margin: 0 auto;
-  animation: rotate 2s linear infinite;
+  width: 40px;
+  height: 40px;
+  margin: 20px auto 0px;
+  animation: rotate 1.5s linear infinite;
 }
 
 @keyframes rotate {

@@ -1,19 +1,28 @@
 import styles from "/styles/Home.module.css";
-import LoadingIndicator from "@/components/LoadingIndicator.js";
 
-export default function Tile({ is_loading, wave_number, wave_content }) {
-  if (is_loading === true) {
+export default function Tile({ wave_content }) {
+  if (wave_content) {
+    const { index, isuser, address, message, timestamp } = wave_content;
     return (
-      <div className={styles.card}>
-        <h3>Loading...</h3>
-        <LoadingIndicator />
+      <div className={`${styles.card} ${isuser ? styles.userWave : ""}`}>
+        <h1>WAVE #{index}</h1>
+        <h2>From:</h2>
+        <p>
+          <i>
+            {isuser ? "(Yes this is you.) " : ""}
+            {address}
+          </i>
+        </p>
+        <h2>At:</h2>
+        <p>{timestamp.toString()}</p>
+        <h2>Message:</h2>
+        <p>{message}</p>
       </div>
     );
   } else {
     return (
       <div className={styles.card}>
-        <h2>Wave #{wave_number}</h2>
-        <p>{wave_content}</p>
+        <h3>No Waves Yet</h3>
       </div>
     );
   }

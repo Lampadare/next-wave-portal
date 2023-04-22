@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className={styles.main}>
       <ConnectWallet></ConnectWallet>
-      <h1 className={styles.main}>Smart Contracts Step 1</h1>
+      <h1 className={styles.main}>Epic Masters Project</h1>
       <p className={styles.description}>
         This is the beginning of a blockchain-enabled decentralised
         crowdsourcing platform.
