@@ -1,7 +1,6 @@
 import { ConnectWallet } from "@thirdweb-dev/react";
 import styles from "/styles/Home.module.css";
 import SendWave from "@/components/SendWave";
-import LoadingIndicator from "@/components/LoadingIndicator.js";
 
 export default function Home() {
   return (
@@ -10,7 +9,8 @@ export default function Home() {
       <h1 className={styles.main}>Epic Masters Project</h1>
       <p className={styles.description}>
         This is the beginning of a blockchain-enabled decentralised
-        crowdsourcing platform.
+        crowdsourcing platform. Don&apos;t post anything stupid, this is on the
+        blockchain and fully public ✌️
       </p>
       <SendWave></SendWave>
     </div>

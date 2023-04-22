@@ -8,7 +8,7 @@
 }
 
 .tilegrid {
-  margin-top: 30px;
+  justify-content: center;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -22,8 +22,9 @@
   justify-content: inherit;
   align-items: center;
   font-size: 1rem;
+  font-weight: 300;
   max-width: var(--max-width);
-  width: 100%;
+  width: 70vw;
   z-index: 2;
   font-family: var(--font-mono);
   margin: 1rem;

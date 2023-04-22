@@ -9,7 +9,7 @@ export default function Tile({ wave_content }) {
         <h2>From:</h2>
         <p>
           <i>
-            {isuser ? "(Yes this is you.) " : ""}
+            {isuser ? "(Yes this is you.) " : "(Not you!) "}
             {address}
           </i>
         </p>

@@ -102,11 +102,9 @@ export default function SendWave() {
         <button className={styles.button} onClick={wave}>
           Send
         </button>
-        {isLoading ? (
-          <div>
-            <LoadingIndicator />
-          </div>
-        ) : null}
+        <div className={styles.main}>
+          {isLoading ? <LoadingIndicator /> : null}
+        </div>
         <div className={styles.tilegrid}>
           {AllWaves_cleaned.map((wave) => (
             <Tile key={wave.index} wave_content={wave} />
