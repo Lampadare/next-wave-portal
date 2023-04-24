@@ -74,8 +74,8 @@ export default function SendWave() {
       console.log("All Waves Cleaned", cleanedWaves);
       setAllWavesCleaned(cleanedWaves);
     }
-    console.log("ContractBalacne", ContractBalance);
-  }, [AllWaves, user_address]);
+    console.log("ContractBalance", ContractBalance);
+  }, [AllWaves, user_address, ContractBalance]);
 
   // Wave
   const wave = async () => {
