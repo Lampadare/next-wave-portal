@@ -4,7 +4,6 @@ import {
   useConnectionStatus,
   useAddress,
   useContract,
-  useContractEvents,
   useContractRead,
   useContractWrite,
 } from "@thirdweb-dev/react";
@@ -19,7 +18,7 @@ export default function SendWave() {
   const [inputWave, setInputWave] = useState("");
   const connectionStatus = useConnectionStatus();
   const { contract: wavePortalContract } = useContract(
-    "0xFcC53A2F5c95E6370B13D45a3C8fad3446A3a6D0"
+    "0x899371D94FF827E228DbBC49C7051A03A97C9483"
   );
   const user_address = useAddress();
 
