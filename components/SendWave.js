@@ -18,7 +18,7 @@ export default function SendWave() {
   const [inputWave, setInputWave] = useState("");
   const connectionStatus = useConnectionStatus();
   const { contract: wavePortalContract } = useContract(
-    "0x899371D94FF827E228DbBC49C7051A03A97C9483"
+    "0x4096A961E206D26E8c4A8771943153001D68D839"
   );
   const user_address = useAddress();
 
@@ -28,6 +28,10 @@ export default function SendWave() {
   );
 
   const { data: AllWaves } = useContractRead(wavePortalContract, "getAllWaves");
+  const { data: ContractBalance } = useContractRead(
+    wavePortalContract,
+    "getContractBalance"
+  );
   const [AllWaves_cleaned, setAllWavesCleaned] = useState([]);
   const [loadingWithTimeout, setLoadingWithTimeout] = useState(false);
 
@@ -70,13 +74,21 @@ export default function SendWave() {
       console.log("All Waves Cleaned", cleanedWaves);
       setAllWavesCleaned(cleanedWaves);
     }
+    console.log("ContractBalacne", ContractBalance);
   }, [AllWaves, user_address]);
 
   // Wave
   const wave = async () => {
     try {
       if (connectionStatus === "connected") {
-        const data = await waveMethod({ args: [inputWave] });
+        const { message, fundsSent } = parseInputWave(inputWave);
+        console.log("message-", message, "-fundsSent", fundsSent, "-");
+        const data = await waveMethod({
+          args: [message],
+          overrides: {
+            value: ethers.utils.parseEther(fundsSent.toString()),
+          },
+        });
         console.log("Success calling contract:", data);
       } else {
         console.log("Please Connect Wallet");
@@ -86,11 +98,25 @@ export default function SendWave() {
     }
   };
 
+  function parseInputWave(inputWave) {
+    const regex = /{([\d.]+)}/;
+    const fundsMatch = inputWave.match(regex);
+    const fundsSent = fundsMatch ? parseFloat(fundsMatch[1]) : 0;
+
+    const message = inputWave.replace(regex, "").trim();
+
+    return { message, fundsSent };
+  }
+
   // Display message about metamask hook in UI
   if (connectionStatus === "connected") {
     return (
       <div className={styles.main}>
         <h3 htmlFor="name">Wave to me here! 🫡</h3>
+        <p className={styles.description}>
+          Optionally, put any funds (ETH) you want to send with your wave in
+          curly brackets: &#123;0.05&#125;.
+        </p>
         <input
           className={styles.input}
           id="name"
@@ -104,6 +130,12 @@ export default function SendWave() {
         <div className={styles.main}>
           {isLoading ? <LoadingIndicator /> : null}
         </div>
+        <p className={styles.description}>
+          Current Prize Pool:{" "}
+          {ContractBalance
+            ? ethers.utils.formatEther(ContractBalance)
+            : "Loading..."}
+        </p>
         <div className={styles.tilegrid}>
           {AllWaves_cleaned.map((wave) => (
             <Tile key={wave.index} wave_content={wave} />
