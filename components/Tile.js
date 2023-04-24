@@ -5,11 +5,11 @@ export default function Tile({ wave_content }) {
     const { index, isuser, address, message, timestamp } = wave_content;
     return (
       <div className={`${styles.card} ${isuser ? styles.userWave : ""}`}>
-        <h1>WAVE #{index}</h1>
+        <h1>WAVE #0{index}</h1>
         <h2>From:</h2>
         <p>
           <i>
-            {isuser ? "(Yes this is you.) " : "(Not you!) "}
+            {isuser ? "(Yes this is you.) " : "(Not you!)"}
             {address}
           </i>
         </p>

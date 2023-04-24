@@ -4,15 +4,10 @@ import styles from "/styles/Home.module.css";
 export default function Message({ text, account }) {
   return (
     <div className={styles.main}>
-      <p className={styles.description}>
+      <h1>
         {text}
         {account}
-      </p>
-      <style jsx>{`
-        p {
-          color: rgb(200, 200, 200);
-        }
-      `}</style>
+      </h1>
     </div>
   );
 }

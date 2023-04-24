@@ -8,7 +8,7 @@ export default function Home() {
       <ConnectWallet></ConnectWallet>
       <h1 className={styles.main}>Epic Web3 Project</h1>
       <p className={styles.description}>
-        This is the beginning of something greate... Don&apos;t post anything
+        This is the beginning of something great... Don&apos;t post anything
         stupid, this is on the blockchain and fully public ✌️
       </p>
       <SendWave></SendWave>

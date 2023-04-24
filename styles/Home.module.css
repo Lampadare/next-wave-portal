@@ -7,6 +7,28 @@
   padding: 2rem;
 }
 
+.main h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+  max-width: 70%;
+}
+
+.main h2 {
+  font-size: 4rem;
+  font-weight: 800;
+}
+
+.main h3 {
+  padding: 0.7rem 1rem;
+  border-radius: 40px;
+  background: rgb(253, 253, 253);
+  border: 2px solid rgb(0, 0, 0);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0px 5px 10px;
+}
+
 .tilegrid {
   justify-content: center;
   display: flex;
@@ -123,10 +145,11 @@
 }
 
 .card h1 {
-  text-align: center;
-  font-size: 1.2rem;
+  text-align: left;
+  font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 1.2rem;
+  width: 100%;
 }
 
 .card h2 {

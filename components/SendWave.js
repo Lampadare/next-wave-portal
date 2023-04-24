@@ -34,8 +34,8 @@ export default function SendWave() {
   );
   const [AllWaves_cleaned, setAllWavesCleaned] = useState([]);
   const [loadingWithTimeout, setLoadingWithTimeout] = useState(false);
-
-  console.log("All Waves Cleaned", AllWaves_cleaned);
+  const [canSendWave, setCanSendWave] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     console.log("=========isLoading", isLoading);
@@ -80,7 +80,20 @@ export default function SendWave() {
   // Wave
   const wave = async () => {
     try {
-      if (connectionStatus === "connected") {
+      if (connectionStatus === "connected" && canSendWave) {
+        setCanSendWave(false);
+        setTimeLeft(60);
+        const timer = setInterval(() => {
+          setTimeLeft((prevTimeLeft) => {
+            if (prevTimeLeft <= 1) {
+              clearInterval(timer);
+              setCanSendWave(true);
+              return 0;
+            }
+            return prevTimeLeft - 1;
+          });
+        }, 1000);
+
         const { message, fundsSent } = parseInputWave(inputWave);
         console.log("message-", message, "-fundsSent", fundsSent, "-");
         const data = await waveMethod({
@@ -90,8 +103,10 @@ export default function SendWave() {
           },
         });
         console.log("Success calling contract:", data);
+
+        setInputWave("");
       } else {
-        console.log("Please Connect Wallet");
+        console.log("Please Connect Wallet or wait for the timer");
       }
     } catch (error) {
       console.log(error);
@@ -108,34 +123,54 @@ export default function SendWave() {
     return { message, fundsSent };
   }
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    wave();
+  };
+
   // Display message about metamask hook in UI
   if (connectionStatus === "connected") {
     return (
       <div className={styles.main}>
-        <h3 htmlFor="name">Wave to me here! 🫡</h3>
+        <h2 htmlFor="name">Wave to me here! 🫡</h2>
         <p className={styles.description}>
-          Optionally, put any funds (ETH) you want to send with your wave in
+          Optionally, put any funds (göETH) you want to send with your wave in
           curly brackets: &#123;0.05&#125;.
         </p>
-        <input
-          className={styles.input}
-          id="name"
-          type="text"
-          value={inputWave}
-          onChange={(e) => setInputWave(e.target.value)}
-        />
-        <button className={styles.button} onClick={wave}>
-          Send
-        </button>
+        <form className={styles.form} onSubmit={handleFormSubmit}>
+          <input
+            className={styles.input}
+            id="name"
+            type="text"
+            value={inputWave}
+            onChange={(e) => setInputWave(e.target.value)}
+          />
+          <button
+            className={styles.button}
+            onClick={wave}
+            disabled={!canSendWave}
+          >
+            Send
+          </button>
+        </form>
+        {!canSendWave ? (
+          <p className={styles.description}>
+            Seconds left before sending another wave: {timeLeft}
+          </p>
+        ) : null}
         <div className={styles.main}>
           {isLoading ? <LoadingIndicator /> : null}
         </div>
-        <p className={styles.description}>
-          Current Prize Pool:{" "}
-          {ContractBalance
-            ? ethers.utils.formatEther(ContractBalance)
-            : "Loading..."}
-        </p>
+        <div className={styles.tilegrid}>
+          <h3 className={styles.main}>Alltime Waves Are Below</h3>
+          <h3 className={styles.main}>
+            Current Prize Pool:{" "}
+            {ContractBalance
+              ? ethers.utils.formatEther(ContractBalance)
+              : "Loading..."}{" "}
+            göETH
+          </h3>
+        </div>
         <div className={styles.tilegrid}>
           {AllWaves_cleaned.map((wave) => (
             <Tile key={wave.index} wave_content={wave} />
@@ -144,6 +179,28 @@ export default function SendWave() {
       </div>
     );
   } else {
-    return <Message text="Please connect wallet." />;
+    return (
+      <div className={styles.main}>
+        <Message
+          text="Please connect wallet to send waves a 
+        get a chance to win some göETH!"
+        />
+        <div className={styles.tilegrid}>
+          <h3 className={styles.main}>Alltime Waves Are Below</h3>
+          <h3 className={styles.main}>
+            Current Prize Pool:{" "}
+            {ContractBalance
+              ? ethers.utils.formatEther(ContractBalance)
+              : "Loading..."}{" "}
+            göETH
+          </h3>
+        </div>
+        <div className={styles.tilegrid}>
+          {AllWaves_cleaned.map((wave) => (
+            <Tile key={wave.index} wave_content={wave} />
+          ))}
+        </div>
+      </div>
+    );
   }
 }
