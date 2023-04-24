@@ -6,11 +6,10 @@ export default function Home() {
   return (
     <div className={styles.main}>
       <ConnectWallet></ConnectWallet>
-      <h1 className={styles.main}>Epic Masters Project</h1>
+      <h1 className={styles.main}>Epic Web3 Project</h1>
       <p className={styles.description}>
-        This is the beginning of a blockchain-enabled decentralised
-        crowdsourcing platform. Don&apos;t post anything stupid, this is on the
-        blockchain and fully public ✌️
+        This is the beginning of something greate... Don&apos;t post anything
+        stupid, this is on the blockchain and fully public ✌️
       </p>
       <SendWave></SendWave>
     </div>
